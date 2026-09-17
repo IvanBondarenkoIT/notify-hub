@@ -20,7 +20,7 @@ export PYTHONPATH=src
 
 ```bash
 docker compose up -d db
-# DATABASE_URL=postgresql+psycopg://notify:notify@localhost:5432/notify_hub
+# DATABASE_URL=postgresql+psycopg://USER:PASSWORD@localhost:5432/notify_hub
 python -m notify_hub          # API + poller + outbox worker
 # или: python -m notify_hub api | worker | once
 ```
@@ -46,7 +46,7 @@ curl -s http://localhost:8080/healthz
 ```bash
 curl -s -X POST http://localhost:8080/v1/events \
   -H "Content-Type: application/json" \
-  -H "X-Api-Key: dev-key-change-me" \
+  -H "X-Api-Key: YOUR_API_KEY" \
   -d '{
     "event_id": "cal-demo-001",
     "type": "calendar.event.v1",
@@ -80,7 +80,7 @@ curl -s -X POST http://localhost:8080/v1/events \
 export PYTHONPATH=src
 pytest -q
 # интеграция с Postgres (опционально):
-# export DATABASE_URL=postgresql+psycopg://notify:notify@localhost:5432/notify_hub
+# export DATABASE_URL=postgresql+psycopg://USER:PASSWORD@localhost:5432/notify_hub
 ```
 
 ## Деплой (Debian)
@@ -89,9 +89,9 @@ pytest -q
 
 1. Скопировать проект на сервер в `~/apps/notify-hub`.
 2. Положить `.env` (секреты не в git).
-3. `docker compose up -d --build` (или `docker compose -f docker-compose.prod.yml up -d`).
+3. `docker compose -f docker-compose.prod.yml up -d --build`.
 4. Держать compose 24/7 (`restart: unless-stopped`).
-5. Позже образ: `ghcr.io/ivanbondarenkoit/notify-hub:latest`.
+5. Позже можно перейти на образ: `ghcr.io/ivanbondarenkoit/notify-hub:latest`.
 
 Документы: `docs/CHANNELS.md`, `docs/EVENT_TYPES.md`, `docs/INTEGRATION_DEC.md`, `ROADMAP.md`.
 

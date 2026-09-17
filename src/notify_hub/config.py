@@ -35,7 +35,7 @@ class Settings:
     api_host: str = "0.0.0.0"
     api_port: int = 8080
     service_api_keys: List[str] = field(default_factory=list)
-    database_url: str = "postgresql+psycopg://notify:notify@localhost:5432/notify_hub"
+    database_url: str = "postgresql+psycopg://notify@localhost:5432/notify_hub"
     telegram_bot_token: str = ""
     telegram_bot_token_private: str = ""
     telegram_bot_token_personal: str = ""
@@ -82,10 +82,10 @@ def get_settings() -> Settings:
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         api_host=os.getenv("API_HOST", "0.0.0.0"),
         api_port=int(os.getenv("API_PORT", "8080")),
-        service_api_keys=_split_csv(os.getenv("SERVICE_API_KEYS", "dev-key-change-me")),
+        service_api_keys=_split_csv(os.getenv("SERVICE_API_KEYS", "")),
         database_url=os.getenv(
             "DATABASE_URL",
-            "postgresql+psycopg://notify:notify@localhost:5432/notify_hub",
+            "postgresql+psycopg://notify@localhost:5432/notify_hub",
         ),
         telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", "").strip(),
         telegram_bot_token_private=os.getenv("TELEGRAM_BOT_TOKEN_PRIVATE", "").strip(),

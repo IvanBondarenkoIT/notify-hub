@@ -2,15 +2,15 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: notify
-      POSTGRES_PASSWORD: notify
-      POSTGRES_DB: notify_hub
+      POSTGRES_USER: ${POSTGRES_USER:-notify}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-notify_hub}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U notify -d notify_hub"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-notify} -d ${POSTGRES_DB:-notify_hub}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -23,7 +23,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: postgresql+psycopg://notify:notify@db:5432/notify_hub
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "8080:8080"
     restart: unless-stopped
