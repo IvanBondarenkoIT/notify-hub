@@ -1,10 +1,10 @@
 # Roadmap — Notification Hub
 
-## Wave 0 — Hub MVP (сейчас)
+## Wave 0 — Hub MVP (сделано)
 
 - HTTP `POST /v1/events` + idempotency по `event_id`
 - PostgreSQL: events / outbox / subscriptions / acks
-- Telegram: public / private / personal (токены + fallback на primary)
+- Три Telegram-бота на проде: public / private / personal (live 18.09.2026, см. `docs/CHANNELS.md`)
 - Подписка через бота (calendar.*), outbox worker, all-in-one процесс
 - Ack: таблицы + stub escalate ticker (без реальной эскалации в TG)
 

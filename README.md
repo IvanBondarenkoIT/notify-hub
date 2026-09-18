@@ -12,7 +12,7 @@ python3.11 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# заполните TELEGRAM_BOT_TOKEN, SERVICE_API_KEYS, DATABASE_URL
+# заполните TELEGRAM_BOT_TOKEN (+ _PRIVATE, _PERSONAL), SERVICE_API_KEYS, DATABASE_URL
 export PYTHONPATH=src
 ```
 
@@ -29,17 +29,27 @@ python -m notify_hub          # API + poller + outbox worker
 
 ```bash
 cp .env.example .env
-# задайте TELEGRAM_BOT_TOKEN и ключи
+# задайте три TELEGRAM_BOT_TOKEN* и ключи
 docker compose up -d --build
 curl -s http://localhost:8080/healthz
 ```
 
 ## Подписка в Telegram
 
-1. Напишите боту `/start` — объяснение + клавиатура «Календарь».
-2. Нажмите **«Календарь»** или напишите `calendar` → подписка на `calendar.*`.
-3. Повторная подписка — мягкое сообщение «уже подписаны».
-4. `/stop` или **«Отписаться»** — снятие подписок.
+Три бота (токены в `.env` хаба):
+
+| Канал | Бот |
+|-------|-----|
+| public | [@dimkava_public_alerts_bot](https://t.me/dimkava_public_alerts_bot) |
+| private | [@dimkava_private_alerts_bot](https://t.me/dimkava_private_alerts_bot) |
+| personal | [@dimkava_personal_alerts_bot](https://t.me/dimkava_personal_alerts_bot) |
+
+1. `/start` — объяснение + клавиатура «Календарь».
+2. **«Календарь»** или слово `calendar` → подписка на `calendar.*`.
+3. Повторная подписка — «уже подписаны».
+4. `/stop` или **«Отписаться»**.
+
+Канал **personal** подписку запоминает, но события приходят только с явным `targets.chat_ids`. Подробности: [`docs/CHANNELS.md`](docs/CHANNELS.md).
 
 ## Отправка события (curl)
 
@@ -93,10 +103,14 @@ pytest -q
 4. Держать compose 24/7 (`restart: unless-stopped`).
 5. Позже можно перейти на образ: `ghcr.io/ivanbondarenkoit/notify-hub:latest`.
 
-Документы: `docs/CHANNELS.md`, `docs/EVENT_TYPES.md`, `docs/INTEGRATION_DEC.md`, `ROADMAP.md`.
+Документы: [`docs/INTEGRATION.md`](docs/INTEGRATION.md) (другие сервисы / агенты), [`AGENTS.md`](AGENTS.md), `docs/CHANNELS.md`, `docs/EVENT_TYPES.md`, `docs/INTEGRATION_DEC.md`, `ROADMAP.md`.
 
 ## Важно
 
 - Только **PostgreSQL** (не SQLite).
 - Один long-poller на каждый уникальный bot token.
 - Ack: схема + stub escalate ticker в MVP.
+
+## Для руководителя
+
+Что задумано, что сделано и зачем — простым языком: [`docs/SUMMARY.md`](docs/SUMMARY.md).

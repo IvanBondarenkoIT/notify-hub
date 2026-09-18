@@ -1,5 +1,7 @@
 # Integration DEC — events-calendar pilot
 
+Общий контракт хаба (URL, ключ, поля, Python-клиент): [`INTEGRATION.md`](INTEGRATION.md).
+
 ## Цель
 
 Перевести календарные уведомления с отдельного Telegram-бота на **Notify Hub**, сохранив UX подписки в одном боте хаба.
@@ -40,7 +42,7 @@
 ## Миграция с отдельного calendar-бота
 
 1. Поднять notify-hub, выдать API key сервису календаря.
-2. Пользователей перевести на бота хаба: `/start` → «Календарь».
+2. Пользователей перевести на **`@dimkava_public_alerts_bot`**: `/start` → «Календарь» (не старый `@prices_monitoring_alerts_bot`).
 3. В events-calendar заменить прямую отправку в Telegram на `POST /v1/events`.
 4. Остановить старый calendar-бот после проверки доставки.
 5. Не дублировать long-poll на одном токене (один poller на token в хабе).

@@ -1,0 +1,20 @@
+---
+description: Как слать уведомления в Notify Hub из другого сервиса. Скопировать в .cursor/rules/ потребителя.
+alwaysApply: true
+---
+
+# Notify Hub client
+
+Не слать в Telegram Bot API, если событие идёт через хаб.
+
+Контракт: `D:\CursorProjects\notify-hub\docs\INTEGRATION.md`
+
+- `POST {NOTIFY_HUB_URL}/v1/events` с `X-Api-Key`
+- Прод с того же Debian: `NOTIFY_HUB_URL=http://127.0.0.1:8080`
+- Стабильный уникальный `event_id` (повтор = `duplicate`, не вторая рассылка)
+- `type` вида `domain.name.v1`; календарь: `calendar.event.v1`, канал `public`
+- `require_ack: false` пока ack в хабе stub
+- Каналы: public `@dimkava_public_alerts_bot`, private `@dimkava_private_alerts_bot`, personal `@dimkava_personal_alerts_bot` — см. `docs/CHANNELS.md`
+- personal: только `targets.chat_ids` (подписка не рассылает)
+- Ключ брать из `SERVICE_API_KEYS` хаба, не из `TELEGRAM_BOT_TOKEN`
+- Не поднимать второй getUpdates на токене хаба

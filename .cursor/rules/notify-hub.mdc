@@ -1,0 +1,16 @@
+---
+description: Notify Hub — правила работы в этом репозитории
+alwaysApply: true
+---
+
+# notify-hub
+
+Это хаб уведомлений, не бот календаря и не Jira-клиент.
+
+- Внешние сервисы шлют `POST /v1/events`. Контракт: `docs/INTEGRATION.md`
+- Боты: `docs/CHANNELS.md` (три токена на проде, live 18.09.2026)
+- PostgreSQL only. Секреты только в `.env` (три `TELEGRAM_BOT_TOKEN*`)
+- Один long-poller на уникальный Telegram token
+- personal: только `targets.chat_ids`; ack/escalate — stub
+- Деплой: `python scripts/deploy_app.py notify-hub` из `ssh-alternative-server-connection`
+- Live в Telegram — только по явной просьбе пользователя
